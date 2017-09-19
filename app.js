@@ -1,6 +1,6 @@
 var http = require('http');
 var fs = require('fs');
-
+let count = 0;
 var server = http.createServer(function (req, res) {
     fs.readFile('./index.html', function (error, data) {
         res.writeHead(200, {'Content-Type': 'text/html'});
@@ -11,9 +11,19 @@ console.log('Server running at http://127.0.0.1:3000/');
 
 var io = require('socket.io').listen(server);
 
-io.sockets.on('connection', function (socket) {
-    console.log('User connected');
-    socket.on('disconnect', function () {
+
+io.sockets.on('connection',function(socket){
+    count++;
+    console.log('User connected' + count + 'user(s) present');
+    socket.emit('users',{number:count});
+    socket.broadcast.emit('users',{number:count});
+    socket.on('disconnect',function(){
+        count--;
         console.log('User disconnected');
+        socket.broadcast.emit('users',{number:count});
+    });
+    socket.on('message',function(data){
+        socket.broadcast.emit('push message',data);
+
     });
 });

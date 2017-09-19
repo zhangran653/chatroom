@@ -3,7 +3,8 @@
   "version": "4.13.2",
   "private": true,
   "dependencies": {
-    "socket.io": "1.4.5",
-    "socketio": "^1.0.0"
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "socket.io": "1.4.5"
   }
 }
